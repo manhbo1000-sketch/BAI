@@ -1,0 +1,208 @@
+index.jsp
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page import="java.util.*" %>
+
+<%-- ====================================================
+     KHỞI TẠO DANH SÁCH KHÁCH HÀNG
+     Dùng Scriptlet để tạo List<Map> giả lập database
+     ==================================================== --%>
+<%
+    List<Map<String, Object>> customers = new ArrayList<>();
+
+    Map<String, Object> c1 = new HashMap<>();
+    c1.put("name",   "Nguyễn Văn An");
+    c1.put("dob",    "15/03/1990");
+    c1.put("address","123 Lê Lợi, Q.1, TP.HCM");
+    c1.put("avatar","https://i.pravatar.cc/150?img=1");
+    customers.add(c1);
+
+    Map<String, Object> c2 = new HashMap<>();
+    c2.put("name",   "Trần Thị Bình");
+    c2.put("dob",    "22/07/1995");
+    c2.put("address","456 Nguyễn Huệ, Q.3, TP.HCM");
+    c2.put("avatar","https://i.pravatar.cc/150?img=5");
+    customers.add(c2);
+
+    Map<String, Object> c3 = new HashMap<>();
+    c3.put("name",   "Lê Hoàng Cường");
+    c3.put("dob",    "08/11/1988");
+    c3.put("address","789 Hai Bà Trưng, Q.1, TP.HCM");
+    c3.put("avatar","https://i.pravatar.cc/150?img=12");
+    customers.add(c3);
+
+    Map<String, Object> c4 = new HashMap<>();
+    c4.put("name",   "Phạm Thị Dung");
+    c4.put("dob",    "30/04/1992");
+    c4.put("address","101 Võ Văn Tần, Q.3, TP.HCM");
+    c4.put("avatar","https://i.pravatar.cc/150?img=9");
+    customers.add(c4);
+
+    Map<String, Object> c5 = new HashMap<>();
+    c5.put("name",   "Hoàng Minh Đức");
+    c5.put("dob",    "12/09/1997");
+    c5.put("address","202 Cách Mạng Tháng 8, Q.10, TP.HCM");
+    c5.put("avatar","https://i.pravatar.cc/150?img=15");
+    customers.add(c5);
+
+    // Đưa danh sách vào request scope để JSTL truy cập
+    request.setAttribute("customerList", customers);
+%>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách khách hàng</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0e7ff, #f8fafc);
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(27, 42, 122, 0.15);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1b2a7a, #3b5bdb);
+            color: #fff;
+            padding: 24px 32px;
+        }
+        .header h1 {
+            margin: 0 0 4px;
+            font-size: 24px;
+        }
+        .header p {
+            margin: 0;
+            opacity: 0.85;
+            font-size: 14px;
+        }
+        .count-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            background: #f1f5f9;
+        }
+        th {
+            text-align: left;
+            padding: 14px 20px;
+            color: #1b2a7a;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+            color: #334155;
+            vertical-align: middle;
+        }
+        tr:hover td {
+            background: #f8fafc;
+        }
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e0e7ff;
+        }
+        .name {
+            font-weight: 600;
+            color: #1b2a7a;
+        }
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>📋 Danh sách khách hàng</h1>
+            <p>Thông tin khách hàng được hiển thị bằng JSTL</p>
+            <span class="count-badge">
+                Tổng: ${customerList.size()} khách hàng
+            </span>
+        </div>
+
+        <%-- ====================================================
+             HIỂN THỊ DANH SÁCH BẰNG JSTL
+             <c:forEach> lặp qua List
+             <c:choose> / <c:when> / <c:otherwise> xử lý điều kiện
+             ${...} là EL — Expression Language
+             ==================================================== --%>
+        <c:choose>
+
+            <%-- Trường hợp có dữ liệu --%>
+            <c:when test="${not empty customerList}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 70px;">Ảnh</th>
+                            <th>Tên</th>
+                            <th>Ngày sinh</th>
+                            <th>Địa chỉ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="customer" items="${customerList}" varStatus="status">
+                            <tr>
+                                <td>
+                                    <img src="${customer.avatar}"
+                                         alt="${customer.name}"
+                                         class="avatar">
+                                </td>
+                                <td class="name">
+                                    <c:out value="${customer.name}" />
+                                </td>
+                                <td>
+                                    <c:out value="${customer.dob}" />
+                                </td>
+                                <td>
+                                    <c:out value="${customer.address}" />
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:when>
+
+            <%-- Trường hợp danh sách rỗng --%>
+            <c:otherwise>
+                <div class="empty">
+                    📭 Không có khách hàng nào trong danh sách.
+                </div>
+            </c:otherwise>
+
+        </c:choose>
+
+    </div>
+
+</body>
+</html>
