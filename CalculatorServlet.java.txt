@@ -1,0 +1,50 @@
+CalculatorServlet.java
+package com.codegym;
+
+import java.io.IOException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "CalculatorServlet", urlPatterns = {"/calculate"})
+public class CalculatorServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8");
+
+        try {
+            double firstOperand  = Double.parseDouble(
+                    request.getParameter("firstOperand"));
+            double secondOperand = Double.parseDouble(
+                    request.getParameter("secondOperand"));
+            String operator      = request.getParameter("operator");
+
+            double result = Calculator.calculate(
+                    firstOperand, secondOperand, operator);
+
+            request.setAttribute("firstOperand",  firstOperand);
+            request.setAttribute("secondOperand", secondOperand);
+            request.setAttribute("operator",      operator);
+            request.setAttribute("result",        result);
+
+        } catch (ArithmeticException e) {
+            request.setAttribute("error", e.getMessage());
+        } catch (NumberFormatException e) {
+            request.setAttribute("error",
+                "Dữ liệu nhập vào không phải là số hợp lệ");
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("error", e.getMessage());
+        } catch (Exception e) {
+            request.setAttribute("error", "Đã xảy ra lỗi: " + e.getMessage());
+        }
+
+        request.getRequestDispatcher("result.jsp")
+               .forward(request, response);
+    }
+}
