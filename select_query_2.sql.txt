@@ -1,0 +1,68 @@
+select_query_2.sql
+-- ============================================================
+-- File: select_query_2.sql
+-- Bài tập: Câu lệnh truy vấn SELECT nâng cao
+-- CSDL: QuanLySinhVien
+-- Sinh viên: .....................
+-- Lớp: .....................
+-- ============================================================
+
+USE QuanLySinhVien;
+
+-- ============================================================
+-- YÊU CẦU 1: Sinh viên có tên BẮT ĐẦU bằng ký tự 'h'
+-- Dùng LIKE 'h%' (không phân biệt hoa/thường trên MySQL mặc định)
+-- ============================================================
+SELECT *
+FROM Student
+WHERE StudentName LIKE 'h%';
+
+-- Nếu muốn phân biệt hoa/thường chính xác (chỉ 'h' thường):
+-- SELECT * FROM Student WHERE StudentName LIKE BINARY 'h%';
+
+
+-- ============================================================
+-- YÊU CẦU 2: Lớp học có thời gian bắt đầu vào THÁNG 12
+-- Dùng hàm MONTH() để lấy tháng từ cột DATE
+-- ============================================================
+SELECT *
+FROM Class
+WHERE MONTH(StartDate) = 12;
+
+-- Cách 2 (dùng LIKE trên chuỗi ngày YYYY-MM-DD):
+-- SELECT * FROM Class WHERE StartDate LIKE '%-12-%';
+
+
+-- ============================================================
+-- YÊU CẦU 3: Môn học có Credit trong khoảng 3-5
+-- Dùng BETWEEN (bao gồm cả 2 đầu mút)
+-- ============================================================
+SELECT *
+FROM Subject
+WHERE Credit BETWEEN 3 AND 5;
+
+
+-- ============================================================
+-- YÊU CẦU 4: Đổi ClassID của sinh viên tên 'Hung' thành 2
+-- Dùng UPDATE ... WHERE
+-- ============================================================
+UPDATE Student
+SET ClassID = 2
+WHERE StudentName = 'Hung';
+
+-- Kiểm tra kết quả sau khi update
+SELECT * FROM Student WHERE StudentName = 'Hung';
+
+
+-- ============================================================
+-- YÊU CẦU 5: Hiển thị StudentName, SubName, Mark
+-- Sắp xếp: Mark GIẢM DẦN, nếu trùng thì StudentName TĂNG DẦN
+-- ============================================================
+SELECT
+    S.StudentName,
+    Sub.SubName,
+    M.Mark
+FROM Student S
+JOIN Mark    M   ON S.StudentID = M.StudentID
+JOIN Subject Sub ON M.SubID     = Sub.SubID
+ORDER BY M.Mark DESC, S.StudentName ASC;
