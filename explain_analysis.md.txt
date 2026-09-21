@@ -1,0 +1,9 @@
+explain_analysis.md
+# Phân tích EXPLAIN — PayFlow Optimization
+
+## 1. Trước tối ưu (câu truy vấn gốc)
+
+```sql
+WHERE transaction_type = 'DEPOSIT'
+  AND YEAR(created_at) = 2026
+  AND MONTH(created_at) = 6

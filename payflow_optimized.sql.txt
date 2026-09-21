@@ -1,0 +1,135 @@
+payflow_optimized.sql
+-- ============================================================
+-- File: payflow_optimized.sql
+-- Dự án: PayFlow - Tối ưu truy vấn báo cáo kế toán
+-- Vai trò: Database Performance Engineer
+-- Sinh viên: .....................
+-- Lớp: .....................
+-- ============================================================
+
+DROP DATABASE IF EXISTS payflow_db;
+CREATE DATABASE payflow_db
+    CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE payflow_db;
+
+-- ============================================================
+-- 1. TẠO BẢNG
+-- ============================================================
+CREATE TABLE Transactions (
+    transaction_id   INT AUTO_INCREMENT PRIMARY KEY,
+    user_id          INT,
+    amount           DECIMAL(15,2),
+    transaction_type VARCHAR(20),
+    created_at       DATETIME
+) ENGINE=InnoDB;
+
+
+-- ============================================================
+-- 2. GIẢ LẬP 5 TRIỆU DÒNG (dùng để test hiệu năng)
+-- Chạy đoạn này nếu muốn đo thời gian thực tế
+-- ============================================================
+-- INSERT INTO Transactions (user_id, amount, transaction_type, created_at)
+-- SELECT
+--     FLOOR(RAND() * 100000) + 1,
+--     ROUND(RAND() * 5000000, 2),
+--     ELT(FLOOR(RAND() * 3) + 1, 'DEPOSIT', 'WITHDRAW', 'TRANSFER'),
+--     DATE_ADD('2024-01-01',
+--              INTERVAL FLOOR(RAND() * 730) DAY)
+-- FROM information_schema.columns c1
+-- CROSS JOIN information_schema.columns c2
+-- LIMIT 5000000;
+
+
+-- ============================================================
+-- 3. EXPLAIN CÂU TRUY VẤN CŨ (Non-SARGable — bị Full Table Scan)
+-- ============================================================
+EXPLAIN
+SELECT SUM(amount) AS total_deposit
+FROM Transactions
+WHERE transaction_type = 'DEPOSIT'
+  AND YEAR(created_at) = 2026
+  AND MONTH(created_at) = 6;
+
+-- Kết quả kỳ vọng (CHƯA có index):
+-- type          = ALL          ← Full Table Scan
+-- possible_keys = NULL
+-- key           = NULL
+-- rows          = ~5.000.000   ← Quét toàn bộ bảng
+-- Extra         = Using where
+
+
+-- ============================================================
+-- 4. TẠO COMPOSITE INDEX (transaction_type, created_at)
+-- Chiến lược: cột có cardinality cao nhưng phải khớp thứ tự WHERE
+-- ============================================================
+CREATE INDEX idx_type_date
+    ON Transactions(transaction_type, created_at);
+
+
+-- ============================================================
+-- 5. EXPLAIN LẠI CÂU TRUY VẤN CŨ SAU KHI CÓ INDEX
+-- Vẫn có hàm YEAR/MONTH → Index VẪN KHÔNG ĐƯỢC DÙNG
+-- ============================================================
+EXPLAIN
+SELECT SUM(amount) AS total_deposit
+FROM Transactions
+WHERE transaction_type = 'DEPOSIT'
+  AND YEAR(created_at) = 2026
+  AND MONTH(created_at) = 6;
+
+-- Kết quả kỳ vọng:
+-- type          = ALL          ← VẪN là ALL vì YEAR/MONTH bọc cột
+-- possible_keys = idx_type_date
+-- key           = NULL         ← Index không được chọn
+-- rows          = ~5.000.000
+-- Extra         = Using where
+
+-- ⇒ KẾT LUẬN: Index một mình không đủ. Phải REFACTOR truy vấn.
+
+
+-- ============================================================
+-- 6. ✅ TRUY VẤN ĐÃ TỐI ƯU (SARGable) — Dùng Range Condition
+-- Thay YEAR/MONTH bằng khoảng thời gian [01/06, 01/07)
+-- ============================================================
+EXPLAIN
+SELECT SUM(amount) AS total_deposit
+FROM Transactions
+WHERE transaction_type = 'DEPOSIT'
+  AND created_at >= '2026-06-01 00:00:00'
+  AND created_at <  '2026-07-01 00:00:00';
+
+-- Kết quả kỳ vọng (SAU khi tối ưu):
+-- type          = range              ← Dùng Index theo khoảng ✅
+-- possible_keys = idx_type_date
+-- key           = idx_type_date      ← Index ĐANG được dùng ✅
+-- key_len       = ...
+-- rows          = vài nghìn (thay vì 5 triệu) ✅
+-- Extra         = Using index condition
+
+
+-- ============================================================
+-- 7. CHẠY TRUY VẤN THỰC TẾ (đã tối ưu)
+-- ============================================================
+SELECT SUM(amount) AS total_deposit
+FROM Transactions
+WHERE transaction_type = 'DEPOSIT'
+  AND created_at >= '2026-06-01 00:00:00'
+  AND created_at <  '2026-07-01 00:00:00';
+
+
+-- ============================================================
+-- 8. (MỞ RỘNG) ĐO THỜI GIAN THỰC THI BẰNG PROFILING
+-- ============================================================
+SET profiling = 1;
+
+SELECT SUM(amount) FROM Transactions
+WHERE transaction_type = 'DEPOSIT'
+  AND YEAR(created_at) = 2026 AND MONTH(created_at) = 6;
+
+SELECT SUM(amount) FROM Transactions
+WHERE transaction_type = 'DEPOSIT'
+  AND created_at >= '2026-06-01 00:00:00'
+  AND created_at <  '2026-07-01 00:00:00';
+
+SHOW PROFILES;
+-- So sánh cột Duration → câu dưới nhanh hơn hàng chục lần
