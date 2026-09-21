@@ -1,9 +1,17 @@
 explain_analysis.md
 # Phân tích EXPLAIN — PayFlow Optimization
 
-## 1. Trước tối ưu (câu truy vấn gốc)
+## 1. Bối cảnh
 
+Bảng `Transactions` có **5.000.000 dòng**. Truy vấn báo cáo kế toán chạy
+mất **45 giây**, gây lock bảng và Timeout cho toàn hệ thống.
+
+## 2. Kết quả EXPLAIN TRƯỚC tối ưu (câu gốc)
+
+**Câu truy vấn:**
 ```sql
+SELECT SUM(amount)
+FROM Transactions
 WHERE transaction_type = 'DEPOSIT'
   AND YEAR(created_at) = 2026
-  AND MONTH(created_at) = 6
+  AND MONTH(created_at) = 6;
