@@ -1,37 +1,364 @@
 style.css
 /* ============================================================
-   EXTERNAL STYLESHEET — Dùng cho external.html
+   RESET & BASE
    ============================================================ */
-
-h1 {
-    color: #e67e22;                     /* Cam */
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    border-bottom: 3px solid #e67e22;
-    padding-bottom: 8px;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-p {
-    color: #2980b9;                     /* Xanh dương */
+:root {
+    --primary: #1b2a7a;
+    --primary-light: #eef2ff;
+    --accent: #f15a24;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --bg: #f8fafc;
+    --white: #ffffff;
+    --border: #e2e8f0;
+    --radius: 12px;
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+html {
+    scroll-behavior: smooth;      /* Cuộn mượt khi click vào mục lục */
+}
+
+body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: 120%;
-    line-height: 1.6;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
 }
 
-code {
-    background-color: #ecf0f1;
-    padding: 2px 6px;
-    border-radius: 4px;
-    color: #c0392b;
-    font-family: Consolas, monospace;
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header {
+    background: linear-gradient(135deg, #1b2a7a 0%, #7c3aed 100%);
+    color: #fff;
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Class riêng cho đoạn ghi chú */
-.note {
-    background-color: #fff3cd;
-    border-left: 4px solid #ffc107;
-    padding: 12px 16px;
-    color: #856404;
-    font-size: 100%;
-    border-radius: 4px;
-    margin-top: 20px;
+.site-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.site-slogan {
+    font-size: 14px;
+    opacity: 0.85;
+    font-style: italic;
+}
+
+/* ============================================================
+   ẢNH BÌA TRUYỆN
+   ============================================================ */
+.cover-section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.cover-image {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.cover-image img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+}
+
+.cover-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+    color: #fff;
+    padding: 32px 24px 20px;
+}
+
+.cover-overlay h2 {
+    font-size: 24px;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.cover-overlay p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* ============================================================
+   MỤC LỤC
+   ============================================================ */
+.toc-section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.section-title {
+    color: var(--primary);
+    font-size: 22px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+}
+
+.toc-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.toc-list li a {
+    display: block;
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 16px 20px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s ease;
+}
+
+.toc-list li a:hover {
+    background-color: var(--primary-light);
+    border-left-color: var(--accent);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(27, 42, 122, 0.12);
+}
+
+.chapter-num {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+/* BƯỚC 5: Định dạng thẻ <h5> cho mục lục */
+.chapter-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.chapter-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* ============================================================
+   NỘI DUNG TRUYỆN
+   ============================================================ */
+.content-section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+}
+
+.chapter {
+    background-color: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px 40px;
+    margin-bottom: 32px;
+    scroll-margin-top: 20px;      /* Khoảng cách khi scroll đến anchor */
+}
+
+.chapter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--primary-light);
+    margin-bottom: 20px;
+}
+
+.chapter-header h3 {
+    color: var(--primary);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.chapter-date {
+    font-size: 13px;
+    color: var(--text-muted);
+    background-color: var(--bg);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.chapter-body p {
+    font-size: 16px;
+    line-height: 1.9;
+    color: #334155;
+    text-align: justify;
+    text-indent: 30px;
+    margin-bottom: 16px;
+}
+
+.chapter-body strong {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.chapter-body em {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* Blockquote */
+.chapter-body blockquote {
+    border-left: 4px solid var(--accent);
+    background-color: #fff8f3;
+    padding: 16px 24px;
+    margin: 20px 0;
+    font-style: italic;
+    color: #7c2d12;
+    border-radius: 0 8px 8px 0;
+    text-indent: 0;
+}
+
+/* ============================================================
+   NÚT ĐIỀU HƯỚNG
+   ============================================================ */
+.prev-btn,
+.next-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 16px;
+    margin-right: 12px;
+    transition: all 0.2s ease;
+}
+
+.prev-btn {
+    background-color: var(--bg);
+    color: var(--primary);
+    border: 2px solid var(--border);
+}
+
+.prev-btn:hover {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.next-btn {
+    background-color: var(--primary);
+    color: #fff;
+    border: 2px solid var(--primary);
+}
+
+.next-btn:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(241, 90, 36, 0.3);
+}
+
+.next-btn.disabled {
+    background-color: var(--text-muted);
+    border-color: var(--text-muted);
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+    background-color: #1e293b;
+    color: #cbd5e1;
+    text-align: center;
+    padding: 24px 20px;
+    font-size: 14px;
+}
+
+.site-footer strong {
+    color: #fff;
+}
+
+.site-footer .small {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+    .site-title {
+        font-size: 22px;
+    }
+
+    .cover-image img {
+        height: 200px;
+    }
+
+    .cover-overlay {
+        padding: 20px 16px 12px;
+    }
+
+    .cover-overlay h2 {
+        font-size: 18px;
+    }
+
+    .cover-overlay p {
+        font-size: 12px;
+    }
+
+    .toc-list {
+        grid-template-columns: 1fr;
+    }
+
+    .chapter {
+        padding: 20px 16px;
+    }
+
+    .chapter-header h3 {
+        font-size: 18px;
+    }
+
+    .chapter-body p {
+        font-size: 15px;
+        text-indent: 20px;
+    }
+
+    .prev-btn,
+    .next-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-right: 0;
+    }
 }

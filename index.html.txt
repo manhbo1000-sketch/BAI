@@ -3,46 +3,252 @@ index.html
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Bài tập CSS cơ bản</title>
-
-    <style>
-        /* ============================================================
-           BƯỚC 2: font-family, color, font-size cho h1 và p
-           ============================================================ */
-        h1 {
-            color: blue;
-            font-family: Tahoma, sans-serif;
-            font-size: 200%;
-        }
-
-        p {
-            color: red;
-            font-family: Arial, sans-serif;
-            font-size: 120%;
-
-            /* BƯỚC 3: border vẽ viền cho thẻ p */
-            border: 1px solid grey;
-
-            /* BƯỚC 4: padding tạo khoảng cách từ viền đến nội dung */
-            padding: 10px;
-        }
-
-        /* ============================================================
-           BƯỚC 5: dùng id để style riêng cho 1 phần tử
-           ============================================================ */
-        #element1 {
-            color: blue;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truyện Hay - Đọc truyện online</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Đây là đề mục</h1>
+    <!-- ============================================================
+         BƯỚC 4: ẢNH TRUYỆN ĐẶT Ở ĐẦU TRANG
+         ============================================================ -->
+    <header class="site-header">
+        <div class="header-content">
+            <h1 class="site-title">📚 Truyện Hay</h1>
+            <p class="site-slogan">Đọc truyện online miễn phí</p>
+        </div>
+    </header>
 
-    <p>Đây là đoạn văn bản.</p>
-    <p>Đây là đoạn văn bản.</p>
-    <p>Đây là đoạn văn bản.</p>
-    <p id="element1">Đoạn văn bản có thuộc tính id</p>
+    <!-- Ảnh bìa truyện -->
+    <div class="cover-section">
+        <div class="cover-image">
+            <img src="https://picsum.photos/id/1039/1200/400"
+                 alt="Ảnh bìa truyện">
+            <div class="cover-overlay">
+                <h2>Doraemon - Chú mèo máy đến từ tương lai</h2>
+                <p>Tác giả: Fujiko F. Fujio · Thể loại: Thiếu nhi, Phiêu lưu</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         BƯỚC 1: MỤC LỤC TRUYỆN
+         BƯỚC 3: Liên kết đến từng chương
+         BƯỚC 5: Dùng thẻ <h5> cho mục lục
+         ============================================================ -->
+    <nav class="toc-section">
+        <h2 class="section-title">📖 Mục lục</h2>
+
+        <ul class="toc-list">
+            <li>
+                <a href="#chapter1">
+                    <span class="chapter-num">Chương 1</span>
+                    <h5 class="chapter-title">Chú mèo máy đến từ tương lai</h5>
+                    <span class="chapter-meta">1.234 lượt đọc</span>
+                </a>
+            </li>
+            <li>
+                <a href="#chapter2">
+                    <span class="chapter-num">Chương 2</span>
+                    <h5 class="chapter-title">Bảo bối đầu tiên - Cánh cửa thần kỳ</h5>
+                    <span class="chapter-meta">987 lượt đọc</span>
+                </a>
+            </li>
+            <li>
+                <a href="#chapter3">
+                    <span class="chapter-num">Chương 3</span>
+                    <h5 class="chapter-title">Nobita và bài kiểm tra 0 điểm</h5>
+                    <span class="chapter-meta">1.456 lượt đọc</span>
+                </a>
+            </li>
+            <li>
+                <a href="#chapter4">
+                    <span class="chapter-num">Chương 4</span>
+                    <h5 class="chapter-title">Chuyến phiêu lưu đầu tiên</h5>
+                    <span class="chapter-meta">789 lượt đọc</span>
+                </a>
+            </li>
+            <li>
+                <a href="#chapter5">
+                    <span class="chapter-num">Chương 5</span>
+                    <h5 class="chapter-title">Cỗ máy thời gian ra đời</h5>
+                    <span class="chapter-meta">654 lượt đọc</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- ============================================================
+         BƯỚC 2: NỘI DUNG ỨNG VỚI TỪNG MỤC LỤC
+         ============================================================ -->
+    <main class="content-section">
+
+        <!-- Chương 1 -->
+        <article id="chapter1" class="chapter">
+            <div class="chapter-header">
+                <h3>Chương 1: Chú mèo máy đến từ tương lai</h3>
+                <span class="chapter-date">📅 01/01/2026</span>
+            </div>
+
+            <div class="chapter-body">
+                <p>
+                    Vào một buổi chiều muộn, cậu bé Nobita đang ngồi một mình
+                    trong phòng vừa khóc vừa viết nhật ký. Cậu vừa bị mẹ mắng
+                    vì tội lười học, lại vừa bị thầy giáo cho điểm 0 trong bài
+                    kiểm tra. Bỗng nhiên, một tiếng động lạ phát ra từ ngăn kéo
+                    bàn học...
+                </p>
+                <p>
+                    Một cái đầu tròn màu xanh lam nhô ra khỏi ngăn kéo. Đó là
+                    một chú mèo máy đến từ thế kỷ 22, tên là <strong>Doraemon</strong>.
+                    Chú mèo ú nu, tốt bụng này được cháu đích tôn của Nobita
+                    ở tương lai phái về quá khứ, để giúp đỡ Nobita học hành
+                    tiến bộ hơn.
+                </p>
+                <p>
+                    "Chào cậu! Tớ là Doraemon. Tớ đến từ tương lai để giúp đỡ
+                    cậu đấy!" - chú mèo máy cất tiếng chào thân thiện.
+                </p>
+                <blockquote>
+                    "Cuộc gặp gỡ giữa Nobita và Doraemon đã mở ra một thế giới
+                    đầy phép màu và những chuyến phiêu lưu bất tận."
+                </blockquote>
+            </div>
+
+            <a href="#chapter2" class="next-btn">Chương tiếp theo →</a>
+        </article>
+
+        <!-- Chương 2 -->
+        <article id="chapter2" class="chapter">
+            <div class="chapter-header">
+                <h3>Chương 2: Bảo bối đầu tiên - Cánh cửa thần kỳ</h3>
+                <span class="chapter-date">📅 05/01/2026</span>
+            </div>
+
+            <div class="chapter-body">
+                <p>
+                    Sau khi làm quen, Doraemon mở chiếc túi thần kỳ trước bụng
+                    ra và lấy cho Nobita xem một bảo bối kỳ diệu: <em>Cánh cửa
+                    thần kỳ</em> (Dokodemo Door). Đây là một cánh cửa có thể dẫn
+                    đến bất kỳ nơi nào trên thế giới, chỉ cần cậu hình dung ra
+                    địa điểm đó trong đầu.
+                </p>
+                <p>
+                    Nobita vô cùng phấn khích. Cậu thử mở cánh cửa đến núi Phú Sĩ
+                    và ngay lập tức được ngắm nhìn cảnh đẹp hùng vĩ của ngọn núi
+                    linh thiêng Nhật Bản.
+                </p>
+                <blockquote>
+                    "Cánh cửa thần kỳ - món bảo bối đầu tiên Doraemon trao cho
+                    Nobita, mở ra những chuyến phiêu lưu đầu tiên của tình bạn
+                    bền chặt."
+                </blockquote>
+            </div>
+
+            <a href="#chapter1" class="prev-btn">← Chương trước</a>
+            <a href="#chapter3" class="next-btn">Chương tiếp theo →</a>
+        </article>
+
+        <!-- Chương 3 -->
+        <article id="chapter3" class="chapter">
+            <div class="chapter-header">
+                <h3>Chương 3: Nobita và bài kiểm tra 0 điểm</h3>
+                <span class="chapter-date">📅 10/01/2026</span>
+            </div>
+
+            <div class="chapter-body">
+                <p>
+                    Một lần nữa, Nobita lại bị điểm 0 trong bài kiểm tra toán.
+                    Cậu về nhà với vẻ mặt buồn rầu, không dám nói với mẹ. Thấy
+                    vậy, Doraemon liền lấy ra <em>Bánh mì chép bài</em> - một
+                    loại bánh đặc biệt có thể giúp người ăn ghi nhớ mọi kiến
+                    thức trong sách vở.
+                </p>
+                <p>
+                    Nhưng Nobita vốn tính lười biếng, cậu chỉ ăn một miếng rồi
+                    ngủ quên. Sáng hôm sau, cậu vẫn không thuộc bài và tiếp tục
+                    bị điểm kém. Doraemon thở dài, khuyên Nobita nên tự học thì
+                    mới tiến bộ.
+                </p>
+                <blockquote>
+                    "Bài học quý giá: Không có bảo bối nào có thể thay thế sự
+                    chăm chỉ và nỗ lực của chính bản thân mình."
+                </blockquote>
+            </div>
+
+            <a href="#chapter2" class="prev-btn">← Chương trước</a>
+            <a href="#chapter4" class="next-btn">Chương tiếp theo →</a>
+        </article>
+
+        <!-- Chương 4 -->
+        <article id="chapter4" class="chapter">
+            <div class="chapter-header">
+                <h3>Chương 4: Chuyến phiêu lưu đầu tiên</h3>
+                <span class="chapter-date">📅 15/01/2026</span>
+            </div>
+
+            <div class="chapter-body">
+                <p>
+                    Doraemon, Nobita cùng các bạn: Shizuka, Jaian và Suneo quyết
+                    định cùng nhau thực hiện một chuyến phiêu lưu đến vùng đất
+                    khủng long bằng <em>Cỗ máy thời gian</em>. Cả nhóm háo hức
+                    chuẩn bị hành trang cho chuyến đi đầy mạo hiểm.
+                </p>
+                <p>
+                    Họ đã gặp gỡ rất nhiều loài khủng long khổng lồ, từ những
+                    chú khủng long ăn cỏ hiền lành đến những con khủng long bạo
+                    chúa hung dữ. Nhờ sự thông minh của Doraemon và tinh thần
+                    đoàn kết, cả nhóm đã vượt qua mọi nguy hiểm.
+                </p>
+                <blockquote>
+                    "Tình bạn là sức mạnh lớn lao nhất - giúp chúng ta vượt qua
+                    mọi khó khăn trên hành trình khám phá thế giới."
+                </blockquote>
+            </div>
+
+            <a href="#chapter3" class="prev-btn">← Chương trước</a>
+            <a href="#chapter5" class="next-btn">Chương tiếp theo →</a>
+        </article>
+
+        <!-- Chương 5 -->
+        <article id="chapter5" class="chapter">
+            <div class="chapter-header">
+                <h3>Chương 5: Cỗ máy thời gian ra đời</h3>
+                <span class="chapter-date">📅 20/01/2026</span>
+            </div>
+
+            <div class="chapter-body">
+                <p>
+                    Trong chuyến du hành cuối tháng, Doraemon dẫn cả nhóm trở
+                    về quá khứ để tìm hiểu về thế giới cổ đại. Cả nhóm được
+                    chứng kiến sự ra đời của nền văn minh Ai Cập với những kim
+                    tự tháp vĩ đại, hay triều đại phong kiến Trung Hoa xa xưa.
+                </p>
+                <p>
+                    Sau chuyến đi, Nobita nhận ra rằng: chỉ cần có ý chí và
+                    tình bạn, mọi ước mơ đều có thể trở thành hiện thực. Cậu
+                    bé hứa sẽ chăm chỉ học tập hơn, để tương lai tươi sáng
+                    hơn đang chờ đợi.
+                </p>
+                <blockquote>
+                    "Tương lai thuộc về những ai biết ước mơ và không ngừng
+                    nỗ lực theo đuổi ước mơ ấy."
+                </blockquote>
+            </div>
+
+            <a href="#chapter4" class="prev-btn">← Chương trước</a>
+            <a href="#" class="next-btn disabled">Hết truyện</a>
+        </article>
+
+    </main>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="site-footer">
+        <p>© 2026 <strong>Truyện Hay</strong> — Đọc truyện online miễn phí</p>
+        <p class="small">Liên hệ: contact@truyenhay.vn</p>
+    </footer>
 
 </body>
 </html>

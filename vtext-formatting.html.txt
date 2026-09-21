@@ -1,0 +1,331 @@
+vtext-formatting.html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Định dạng văn bản với CSS</title>
+
+    <style>
+        /* ============================================================
+           RESET & CƠ BẢN
+           ============================================================ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f5f7fa;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 40px 48px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ============================================================
+           TIÊU ĐỀ CHÍNH
+           ============================================================ */
+        h1 {
+            color: #1b2a7a;
+            font-size: 200%;              /* Gấp đôi cỡ chữ mặc định */
+            text-align: center;           /* Căn giữa */
+            font-family: Tahoma, sans-serif;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #1b2a7a;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ============================================================
+           TIÊU ĐỀ PHỤ
+           ============================================================ */
+        h2 {
+            color: #f15a24;
+            font-size: 140%;
+            font-family: Tahoma, sans-serif;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        h3 {
+            color: #27ae60;
+            font-size: 120%;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        /* ============================================================
+           ĐOẠN VĂN BẢN CHÍNH — Thụt đầu dòng
+           ============================================================ */
+        p {
+            font-size: 110%;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 16px;
+
+            /* Thụt đầu dòng 30px */
+            text-indent: 30px;
+
+            /* Căn đều 2 bên */
+            text-align: justify;
+        }
+
+        /* ============================================================
+           CÁC CLASS ĐỊNH DẠNG RIÊNG
+           ============================================================ */
+
+        /* Căn trái */
+        .text-left {
+            text-align: left;
+            text-indent: 0;
+        }
+
+        /* Căn phải */
+        .text-right {
+            text-align: right;
+            text-indent: 0;
+            color: #8e44ad;
+            font-style: italic;
+        }
+
+        /* Căn giữa */
+        .text-center {
+            text-align: center;
+            text-indent: 0;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        /* Căn đều 2 bên */
+        .text-justify {
+            text-align: justify;
+        }
+
+        /* Chữ in đậm */
+        .bold {
+            font-weight: bold;
+            color: #1b2a7a;
+        }
+
+        /* Chữ in nghiêng */
+        .italic {
+            font-style: italic;
+            color: #16a34a;
+        }
+
+        /* Chữ gạch chân */
+        .underline {
+            text-decoration: underline;
+            text-decoration-color: #f15a24;
+            text-decoration-thickness: 2px;
+        }
+
+        /* Chữ gạch ngang */
+        .strikethrough {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+
+        /* Chữ hoa */
+        .uppercase {
+            text-transform: uppercase;
+            color: #e67e22;
+            letter-spacing: 1px;
+        }
+
+        /* Chữ thường */
+        .lowercase {
+            text-transform: lowercase;
+            color: #3498db;
+        }
+
+        /* Chữ hoa đầu mỗi từ */
+        .capitalize {
+            text-transform: capitalize;
+            color: #9b59b6;
+        }
+
+        /* Đổ bóng chữ */
+        .shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            color: #2c3e50;
+            font-size: 130%;
+            font-weight: bold;
+        }
+
+        /* Khoảng cách chữ */
+        .letter-spacing {
+            letter-spacing: 3px;
+            color: #c0392b;
+        }
+
+        /* Khoảng cách dòng */
+        .line-height {
+            line-height: 2.5;
+            color: #7f8c8d;
+        }
+
+        /* Highlight nền vàng */
+        .highlight {
+            background-color: #fef08a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Khối trích dẫn */
+        blockquote {
+            border-left: 4px solid #1b2a7a;
+            background-color: #f8fafc;
+            padding: 16px 24px;
+            margin: 24px 0;
+            font-style: italic;
+            color: #475569;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Danh sách */
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 16px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Code inline */
+        code {
+            background-color: #ecf0f1;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #c0392b;
+            font-family: Consolas, monospace;
+            font-size: 95%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== TIÊU ĐỀ CHÍNH ===== -->
+        <h1>Định dạng văn bản với CSS</h1>
+
+        <!-- ===== ĐOẠN VĂN BẢN CHÍNH — Căn đều + thụt đầu dòng ===== -->
+        <p>
+            CSS cung cấp rất nhiều thuộc tính để định dạng văn bản trên trang web.
+            Bạn có thể thay đổi màu sắc, kích thước, kiểu chữ, căn lề, khoảng cách
+            giữa các dòng và nhiều hiệu ứng khác. Việc nắm vững các thuộc tính này
+            giúp bạn tạo ra những trang web đẹp mắt và dễ đọc.
+        </p>
+
+        <p>
+            Đoạn văn bản này minh họa thuộc tính <code>text-indent: 30px</code>
+            giúp thụt lề đầu dòng, và <code>text-align: justify</code> giúp căn đều
+            hai bên trái phải. Khi kết hợp với <code>line-height: 1.8</code>,
+            văn bản trở nên thoáng đãng và dễ đọc hơn rất nhiều.
+        </p>
+
+        <!-- ===== CĂN LỀ ===== -->
+        <h2>1. Căn lề văn bản (text-align)</h2>
+
+        <p class="text-left">
+            → Đoạn này căn lề <strong>trái</strong> (text-align: left) — mặc định.
+        </p>
+
+        <p class="text-center">
+            → Đoạn này căn <strong>giữa</strong> (text-align: center).
+        </p>
+
+        <p class="text-right">
+            → Đoạn này căn lề <strong>phải</strong> (text-align: right).
+        </p>
+
+        <p class="text-justify">
+            → Đoạn này căn <strong>đều hai bên</strong> (text-align: justify).
+            Khi văn bản dài, các từ sẽ được dàn đều để hai bên trái phải
+            thẳng hàng nhau, tạo cảm giác chuyên nghiệp cho tài liệu.
+        </p>
+
+        <!-- ===== ĐỊNH DẠNG CHỮ ===== -->
+        <h2>2. Định dạng kiểu chữ</h2>
+
+        <p>
+            <span class="bold">Chữ in đậm</span> — sử dụng font-weight: bold.
+            <span class="italic">Chữ in nghiêng</span> — sử dụng font-style: italic.
+            <span class="underline">Chữ gạch chân</span> — sử dụng text-decoration: underline.
+            <span class="strikethrough">Chữ gạch ngang</span> — sử dụng text-decoration: line-through.
+        </p>
+
+        <h2>3. Biến đổi chữ (text-transform)</h2>
+
+        <p>
+            <span class="uppercase">chữ in hoa toàn bộ</span> —
+            <span class="lowercase">CHỮ IN THƯỜNG TOÀN BỘ</span> —
+            <span class="capitalize">chữ hoa đầu mỗi từ</span>
+        </p>
+
+        <!-- ===== HIỆU ỨNG ===== -->
+        <h2>4. Hiệu ứng văn bản</h2>
+
+        <p class="shadow">→ Chữ có đổ bóng (text-shadow)</p>
+
+        <p class="letter-spacing">→ Chữ có khoảng cách rộng (letter-spacing: 3px)</p>
+
+        <p>
+            → Đoạn văn bản có <span class="highlight">highlight nền vàng</span>
+            để làm nổi bật thông tin quan trọng.
+        </p>
+
+        <p class="line-height">
+            → Đoạn văn này có line-height: 2.5 — khoảng cách giữa các dòng rất rộng,
+            phù hợp cho ghi chú hoặc trích dẫn cần không gian thở.
+        </p>
+
+        <!-- ===== TRÍCH DẪN ===== -->
+        <h3>Trích dẫn nổi bật</h3>
+
+        <blockquote>
+            "Thiết kế không chỉ là làm cho mọi thứ trông đẹp.
+            Thiết kế là làm cho mọi thứ hoạt động tốt."
+            <br>— Steve Jobs
+        </blockquote>
+
+        <!-- ===== DANH SÁCH ===== -->
+        <h2>5. Các thuộc tính đã sử dụng</h2>
+
+        <ul>
+            <li><code>color</code> — Màu chữ</li>
+            <li><code>font-size</code> — Cỡ chữ (px, %, em, rem)</li>
+            <li><code>font-family</code> — Font chữ</li>
+            <li><code>font-weight</code> — Độ đậm (normal, bold, 100–900)</li>
+            <li><code>font-style</code> — Kiểu chữ (normal, italic, oblique)</li>
+            <li><code>text-align</code> — Căn lề (left, right, center, justify)</li>
+            <li><code>text-indent</code> — Thụt đầu dòng</li>
+            <li><code>text-decoration</code> — Gạch chân, gạch ngang</li>
+            <li><code>text-transform</code> — Chuyển hoa/thường</li>
+            <li><code>text-shadow</code> — Đổ bóng chữ</li>
+            <li><code>letter-spacing</code> — Khoảng cách giữa các ký tự</li>
+            <li><code>line-height</code> — Khoảng cách giữa các dòng</li>
+        </ul>
+
+    </div>
+
+</body>
+</html>
