@@ -1,0 +1,32 @@
+external.html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Phần 3 — External Style</title>
+
+    <!-- 
+        EXTERNAL STYLE: Liên kết đến file .css bên ngoài
+        - Tái sử dụng cho nhiều trang HTML
+        - Dễ bảo trì, tách biệt cấu trúc và giao diện
+        - Được cache bởi trình duyệt → tải nhanh hơn
+    -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Đây là tiêu đề — External Style</h1>
+
+    <p>
+        Đây là đoạn văn bản được tô màu bằng <strong>external-style</strong>.
+        CSS được tách riêng ra file <code>style.css</code> và liên kết
+        qua thẻ <code>&lt;link&gt;</code>.
+    </p>
+
+    <p class="note">
+        💡 Ưu điểm: 1 file CSS có thể dùng cho nhiều trang HTML
+        → chỉ cần sửa 1 chỗ, toàn bộ website cập nhật theo.
+    </p>
+
+</body>
+</html>

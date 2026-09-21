@@ -1,0 +1,45 @@
+internal.html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Phần 2 — Internal Style</title>
+
+    <!-- 
+        INTERNAL STYLE: Viết CSS trong thẻ <style> đặt ở phần <head>
+        - Áp dụng cho toàn bộ trang HTML hiện tại
+        - Gọn hơn inline, nhưng vẫn không tái sử dụng được cho trang khác
+    -->
+    <style>
+        h1 {
+            color: #27ae60;                 /* Xanh lá */
+            font-family: Tahoma, sans-serif;
+        }
+
+        p {
+            color: #8e44ad;                 /* Tím */
+            font-family: Arial, sans-serif;
+            font-size: 120%;
+            line-height: 1.6;
+        }
+
+        code {
+            background-color: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Đây là tiêu đề — Internal Style</h1>
+
+    <p>
+        Đây là đoạn văn bản được tô màu bằng <strong>internal-style</strong>.
+        Toàn bộ CSS được khai báo tập trung trong thẻ <code>&lt;style&gt;</code>
+        ở phần <code>&lt;head&gt;</code> của trang.
+    </p>
+
+</body>
+</html>

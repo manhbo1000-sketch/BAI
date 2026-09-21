@@ -1,0 +1,28 @@
+inline.html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Phần 1 — Inline Style</title>
+</head>
+<body>
+
+    <!-- 
+        INLINE STYLE: Viết CSS trực tiếp trong thuộc tính style="" của thẻ HTML
+        - Áp dụng cho DUY NHẤT thẻ đó
+        - Độ ưu tiên cao nhất
+        - Khó bảo trì khi có nhiều phần tử
+    -->
+
+    <h1 style="color: #e74c3c; font-family: Tahoma;">
+        Đây là tiêu đề — Inline Style
+    </h1>
+
+    <p style="color: #3498db; font-family: Arial; font-size: 120%;">
+        Đây là đoạn văn bản được tô màu bằng <strong>inline-style</strong>.
+        Màu chữ và font được viết trực tiếp trong thuộc tính <code>style</code>
+        của thẻ HTML.
+    </p>
+
+</body>
+</html>

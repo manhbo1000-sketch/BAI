@@ -1,0 +1,37 @@
+style.css
+/* ============================================================
+   EXTERNAL STYLESHEET — Dùng cho external.html
+   ============================================================ */
+
+h1 {
+    color: #e67e22;                     /* Cam */
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    border-bottom: 3px solid #e67e22;
+    padding-bottom: 8px;
+}
+
+p {
+    color: #2980b9;                     /* Xanh dương */
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 120%;
+    line-height: 1.6;
+}
+
+code {
+    background-color: #ecf0f1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #c0392b;
+    font-family: Consolas, monospace;
+}
+
+/* Class riêng cho đoạn ghi chú */
+.note {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 12px 16px;
+    color: #856404;
+    font-size: 100%;
+    border-radius: 4px;
+    margin-top: 20px;
+}

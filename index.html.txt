@@ -1,0 +1,48 @@
+index.html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bài tập CSS cơ bản</title>
+
+    <style>
+        /* ============================================================
+           BƯỚC 2: font-family, color, font-size cho h1 và p
+           ============================================================ */
+        h1 {
+            color: blue;
+            font-family: Tahoma, sans-serif;
+            font-size: 200%;
+        }
+
+        p {
+            color: red;
+            font-family: Arial, sans-serif;
+            font-size: 120%;
+
+            /* BƯỚC 3: border vẽ viền cho thẻ p */
+            border: 1px solid grey;
+
+            /* BƯỚC 4: padding tạo khoảng cách từ viền đến nội dung */
+            padding: 10px;
+        }
+
+        /* ============================================================
+           BƯỚC 5: dùng id để style riêng cho 1 phần tử
+           ============================================================ */
+        #element1 {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Đây là đề mục</h1>
+
+    <p>Đây là đoạn văn bản.</p>
+    <p>Đây là đoạn văn bản.</p>
+    <p>Đây là đoạn văn bản.</p>
+    <p id="element1">Đoạn văn bản có thuộc tính id</p>
+
+</body>
+</html>
