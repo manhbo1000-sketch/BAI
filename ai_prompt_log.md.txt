@@ -1,0 +1,106 @@
+ai_prompt_log.md
+# AI Prompt Log — FlashMart JOIN Reports
+
+> Nhật ký trao đổi với AI (SQL Tuning Assistant).
+
+---
+
+## 1. `JOIN` mặc định là gì?
+
+**Hỏi AI:**
+> "Trong MySQL, khi viết `JOIN` mà không ghi rõ LEFT/RIGHT thì nó hoạt
+> động như thế nào? Có bỏ qua bản ghi không khớp không?"
+
+**AI trả lời (tóm tắt):**
+- `JOIN` = `INNER JOIN` (mặc định).
+- Chỉ giữ dòng có **khớp ở cả 2 bảng**.
+- Dòng không khớp ở 1 bên → **bị loại**.
+- ⇒ Đây là lý do Charlie (không có đơn) biến mất khỏi báo cáo Marketing.
+
+---
+
+## 2. Khác biệt INNER vs LEFT qua lý thuyết tập hợp
+
+**Hỏi AI:**
+> "Giải thích INNER JOIN và LEFT JOIN bằng Venn Diagram."
+
+**AI trả lời (tóm tắt):**
+
+| JOIN | Tập hợp | Ghi chú |
+|---|---|---|
+| `INNER JOIN` | **Giao** của 2 tập (A ∩ B) | Chỉ dòng khớp cả 2 bên |
+| `LEFT JOIN` | **Toàn bộ A** + giao (A ∪ A∩B) | Giữ mọi dòng bảng trái |
+| `RIGHT JOIN` | **Toàn bộ B** + giao | Giữ mọi dòng bảng phải |
+| `FULL OUTER JOIN` | **Hợp** (A ∪ B) | MySQL không hỗ trợ native |
+
+---
+
+## 3. `COUNT(*)` vs `COUNT(o.order_id)` khi LEFT JOIN
+
+**Hỏi AI:**
+> "Khi LEFT JOIN và đếm đơn hàng, tôi nên dùng `COUNT(*)` hay
+> `COUNT(o.order_id)`?"
+
+**AI trả lời (tóm tắt):**
+- `COUNT(*)` đếm **mọi dòng**, kể cả dòng sinh ra do LEFT JOIN với NULL.
+- `COUNT(o.order_id)` **bỏ qua NULL** → khách chưa mua ra **0** đúng.
+- ⇒ Luôn dùng `COUNT(cột_khóa_bảng_phải)` khi LEFT JOIN.
+- Ngoài ra `COUNT(1)` cũng đếm mọi dòng → sai trong ngữ cảnh này.
+
+---
+
+## 4. Anti-Join — cách tìm bản ghi "mồ côi"
+
+**Hỏi AI:**
+> "Cách tối ưu để tìm sản phẩm chưa từng được bán?"
+
+**AI trả lời (tóm tắt):**
+
+| Cách | Cú pháp | Ưu / Nhược |
+|---|---|---|
+| **LEFT JOIN + IS NULL** | `LEFT JOIN ... WHERE right.pk IS NULL` | Nhanh, chuẩn, dễ đọc ✅ |
+| **NOT EXISTS** | `WHERE NOT EXISTS (SELECT 1 ...)` | Nhanh, an toàn với NULL ✅ |
+| **NOT IN** | `WHERE pk NOT IN (SELECT ...)` | ⚠️ Chậm + sai nếu subquery có NULL |
+
+→ Khuyến nghị: **LEFT JOIN + IS NULL** hoặc **NOT EXISTS** cho anti-join.
+
+---
+
+## 5. Vì sao `WHERE o.order_id IS NULL` phải đi với LEFT JOIN?
+
+**Hỏi AI:**
+> "Nếu đổi LEFT JOIN thành INNER JOIN trong câu tìm sản phẩm ế, mệnh đề
+> WHERE o.order_id IS NULL còn ý nghĩa không?"
+
+**AI trả lời (tóm tắt):**
+- **Không.** INNER JOIN chỉ giữ dòng **khớp** → `o.order_id` luôn có giá trị.
+- `IS NULL` sẽ **luôn false** → kết quả **rỗng**.
+- ⇒ Anti-Join **bắt buộc** dùng LEFT JOIN (giữ dòng không khớp rồi lọc NULL).
+
+---
+
+## 6. Cross Join (Cartesian Product)
+
+**Hỏi AI:**
+> "Khi nào JOIN vô tình biến thành Cross Join gây treo hệ thống?"
+
+**AI trả lời (tóm tắt):**
+- Xảy ra khi **thiếu mệnh đề ON** hoặc ON **luôn đúng** (`ON 1=1`).
+- Kết quả = **m × n dòng** (3 bảng × 1000 dòng = 3.000.000 dòng).
+- Triệu chứng: query treo, CPU tăng vọt, hết RAM.
+- Phòng tránh: **luôn có ON** và **kiểm tra lại điều kiện JOIN**.
+
+---
+
+## 7. FULL OUTER JOIN trong MySQL
+
+**Hỏi AI:**
+> "MySQL có hỗ trợ FULL OUTER JOIN không? Nếu không, giả lập thế nào?"
+
+**AI trả lời (tóm tắt):**
+- MySQL **không hỗ trợ** `FULL OUTER JOIN`.
+- Giả lập bằng `UNION` của `LEFT JOIN` + `RIGHT JOIN`:
+```sql
+SELECT ... FROM A LEFT  JOIN B ON ...
+UNION
+SELECT ... FROM A RIGHT JOIN B ON ...

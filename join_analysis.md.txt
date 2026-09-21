@@ -1,0 +1,29 @@
+join_analysis.md
+# Phân tích JOIN — FlashMart Reports
+
+## Vì sao dùng `COUNT(o.order_id)` thay vì `COUNT(*)`?
+
+Khi dùng **LEFT JOIN**, khách hàng **Charlie** (chưa từng mua hàng) vẫn
+được giữ lại trong kết quả, nhưng các cột đến từ bảng `Orders` sẽ mang
+giá trị **NULL**.
+
+| Hàm | Hành vi | Kết quả cho Charlie |
+|---|---|---|
+| `COUNT(*)` | Đếm **mọi dòng** trong kết quả — kể cả dòng có NULL | **1** ❌ SAI |
+| `COUNT(o.order_id)` | Bỏ qua NULL, chỉ đếm dòng có giao dịch thật | **0** ✅ ĐÚNG |
+
+→ `COUNT(*)` đếm cả dòng "ảo" sinh ra bởi LEFT JOIN (bên phải NULL).
+→ `COUNT(o.order_id)` chỉ đếm khi khóa chính bảng phải **tồn tại**.
+
+## Ý nghĩa nghiệp vụ
+
+Giám đốc Marketing cần biết **chính xác** ai chưa mua để gửi Voucher.
+Nếu báo cáo ghi "Charlie: 1 đơn" → hệ thống sẽ **loại Charlie** khỏi
+danh sách nhận Voucher → chiến dịch **mất đúng nhóm khách hàng tiềm năng**
+mà công ty muốn kích cầu.
+
+## Kết luận
+
+> Khi LEFT JOIN + COUNT, **luôn đếm cột khóa chính của bảng bên phải**,
+> không bao giờ đếm `*`. Đây là quy tắc vàng để phân biệt
+> **"không có giao dịch"** (0) với **"có 1 giao dịch NULL"** (1).

@@ -1,0 +1,59 @@
+select_query.sql
+-- ============================================================
+-- File: select_query.sql
+-- Bài tập: Sử dụng câu lệnh truy vấn SELECT trong MySQL
+-- CSDL: QuanLySinhVien
+-- Sinh viên: .....................
+-- Lớp: .....................
+-- ============================================================
+
+USE QuanLySinhVien;
+
+-- ============================================================
+-- YÊU CẦU 1: Hiển thị danh sách TẤT CẢ học viên
+-- ============================================================
+SELECT *
+FROM Student;
+
+
+-- ============================================================
+-- YÊU CẦU 2: Hiển thị danh sách học viên ĐANG THEO HỌC
+-- Status = 1 (đang học) | Status = 0 (nghỉ học)
+-- ============================================================
+SELECT *
+FROM Student
+WHERE Status = 1;
+
+
+-- ============================================================
+-- YÊU CẦU 3: Hiển thị môn học có Credit < 10
+-- ============================================================
+SELECT *
+FROM Subject
+WHERE Credit < 10;
+
+
+-- ============================================================
+-- YÊU CẦU 4: Hiển thị danh sách học viên LỚP A1
+-- Dùng JOIN kết hợp WHERE
+-- ============================================================
+SELECT S.StudentID,
+       S.StudentName,
+       C.ClassName
+FROM Student S
+JOIN Class C ON S.ClassID = C.ClassID
+WHERE C.ClassName = 'A1';
+
+
+-- ============================================================
+-- YÊU CẦU 5: Hiển thị điểm môn CF của các học viên
+-- JOIN 3 bảng: Student ↔ Mark ↔ Subject
+-- ============================================================
+SELECT S.StudentID,
+       S.StudentName,
+       Sub.SubName,
+       M.Mark
+FROM Student S
+JOIN Mark    M   ON S.StudentID = M.StudentID
+JOIN Subject Sub ON M.SubID     = Sub.SubID
+WHERE Sub.SubName = 'CF';
