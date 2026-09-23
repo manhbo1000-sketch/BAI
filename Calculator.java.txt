@@ -1,27 +1,43 @@
 Calculator.java
 package com.codegym;
 
+import java.security.NoSuchAlgorithmException;
+
+/**
+ * Calculator — Thư viện tiện ích toán học.
+ * Các phương thức đều là static, có thể gọi trực tiếp không cần khởi tạo.
+ */
 public class Calculator {
 
-    public static double calculate(double firstOperand,
-                                    double secondOperand,
-                                    String operator) {
+    /**
+     * Cộng 2 số nguyên.
+     */
+    public static int sum(int a, int b) {
+        return a + b;
+    }
 
-        switch (operator) {
-            case "+":
-                return firstOperand + secondOperand;
-            case "-":
-                return firstOperand - secondOperand;
-            case "*":
-                return firstOperand * secondOperand;
-            case "/":
-                if (secondOperand == 0) {
-                    throw new ArithmeticException("Không thể chia cho 0");
-                }
-                return firstOperand / secondOperand;
-            default:
-                throw new IllegalArgumentException(
-                    "Toán tử không hợp lệ: " + operator);
+    /**
+     * Trừ 2 số nguyên.
+     */
+    public static int sub(int a, int b) {
+        return a - b;
+    }
+
+    /**
+     * Nhân 2 số nguyên.
+     */
+    public static int mul(int a, int b) {
+        return a * b;
+    }
+
+    /**
+     * Chia 2 số nguyên.
+     * @throws NoSuchAlgorithmException nếu b = 0
+     */
+    public static int divide(int a, int b) throws NoSuchAlgorithmException {
+        if (b == 0) {
+            throw new NoSuchAlgorithmException();
         }
+        return a / b;
     }
 }
