@@ -1,0 +1,28 @@
+create.jsp
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%--
+    create.jsp — Trang form thêm khách hàng mới.
+
+    Nhiệm vụ:
+      - Hiển thị form POST tới /customers?action=create.
+      - Có 3 trường: name, email, address.
+      - Có nút Lưu và link Quay lại.
+      - Hiển thị thông báo thành công nếu có request attribute "message".
+
+    TODO:
+      - Vẽ form HTML với 3 input.
+      - Dùng <c:if test="${not empty message}"> để hiển thị thông báo.
+--%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm khách hàng mới</title>
+</head>
+<body>
+
+    <%-- TODO: Vẽ form thêm mới khách hàng --%>
+
+</body>
+</html>

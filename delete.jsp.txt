@@ -1,0 +1,26 @@
+delete.jsp
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%--
+    delete.jsp — Trang xác nhận xóa khách hàng.
+
+    Nhiệm vụ:
+      - Hiển thị thông tin khách hàng sắp xóa (name, email).
+      - Form POST tới /customers?action=delete kèm input hidden id.
+      - Có 2 nút: "Đồng ý xóa" (submit) và "Hủy bỏ" (link về list).
+
+    TODO:
+      - Vẽ giao diện xác nhận.
+      - Dùng EL ${customer.xxx} để hiển thị thông tin.
+--%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Xác nhận xóa</title>
+</head>
+<body>
+
+    <%-- TODO: Vẽ giao diện xác nhận xóa --%>
+
+</body>
+</html>

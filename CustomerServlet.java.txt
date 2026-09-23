@@ -1,0 +1,42 @@
+CustomerServlet.java
+package com.codegym.controller;
+
+import com.codegym.model.Customer;
+import com.codegym.service.CustomerService;
+import com.codegym.service.CustomerServiceImpl;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * CustomerServlet — Controller điều hướng mọi request liên quan đến khách hàng.
+ *
+ * URL mapping: /customers
+ *
+ * Nhiệm vụ:
+ *  - doGet(): xử lý các action: list, create, edit, delete, view
+ *  - doPost(): xử lý các action: create, edit, delete
+ *  - Điều phối tới các trang JSP tương ứng trong /customer/
+ *
+ * TODO:
+ *  - Override doGet / doPost
+ *  - Cài đặt switch-case theo request.getParameter("action")
+ *  - Viết các phương thức private: listCustomers, showCreateForm,
+ *    showEditForm, showDeleteForm, viewCustomer,
+ *    createCustomer, updateCustomer, deleteCustomer
+ */
+@WebServlet(name = "CustomerServlet", urlPatterns = "/customers")
+public class CustomerServlet extends HttpServlet {
+
+    // TODO: Khai báo field CustomerService
+
+    // TODO: Override doGet(HttpServletRequest, HttpServletResponse)
+
+    // TODO: Override doPost(HttpServletRequest, HttpServletResponse)
+
+    // TODO: Các phương thức private xử lý từng action
+}

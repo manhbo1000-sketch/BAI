@@ -1,0 +1,28 @@
+list.jsp
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%--
+    list.jsp — Trang hiển thị danh sách khách hàng.
+
+    Nhiệm vụ:
+      - Hiển thị bảng danh sách khách hàng từ request attribute "customers".
+      - Có nút "Thêm khách hàng mới".
+      - Mỗi dòng có các nút: Xem / Sửa / Xóa.
+      - Dùng JSTL <c:forEach> để lặp danh sách.
+
+    TODO:
+      - Vẽ bảng HTML với tiêu đề: ID, Họ và Tên, Email, Địa chỉ, Hành động.
+      - Dùng <c:forEach items="${customers}" var="customer"> để render từng dòng.
+--%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách khách hàng</title>
+</head>
+<body>
+
+    <%-- TODO: Vẽ nội dung danh sách khách hàng --%>
+
+</body>
+</html>

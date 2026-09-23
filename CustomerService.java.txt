@@ -1,0 +1,24 @@
+CustomerService.java
+package com.codegym.service;
+
+import com.codegym.model.Customer;
+import java.util.List;
+
+/**
+ * CustomerService — Interface định nghĩa các nghiệp vụ liên quan đến khách hàng.
+ *
+ * Nhiệm vụ:
+ *  - Khai báo các phương thức CRUD chuẩn cho tầng Service.
+ *  - Là hợp đồng (contract) để lớp CustomerServiceImpl triển khai.
+ *
+ * TODO: Khai báo các phương thức:
+ *   - List<Customer> findAll()
+ *   - void save(Customer customer)
+ *   - Customer findById(int id)
+ *   - void update(int id, Customer customer)
+ *   - void remove(int id)
+ */
+public interface CustomerService {
+
+    // TODO: Khai báo 5 phương thức CRUD
+}

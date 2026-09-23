@@ -6,7 +6,7 @@ pom.xml
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.codegym</groupId>
-    <artifactId>jsp-servlet-calculator</artifactId>
+    <artifactId>customer-management</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
 
@@ -42,6 +42,13 @@ pom.xml
     </dependencies>
 
     <build>
-        <finalName>jsp-servlet-calculator</finalName>
+        <finalName>customer-management</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+            </plugin>
+        </plugins>
     </build>
 </project>

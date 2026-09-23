@@ -1,0 +1,26 @@
+view.jsp
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%--
+    view.jsp — Trang xem chi tiết một khách hàng.
+
+    Nhiệm vụ:
+      - Hiển thị đầy đủ thông tin: id, name, email, address.
+      - Dữ liệu lấy từ request attribute "customer".
+      - Có link "Quay lại danh sách".
+
+    TODO:
+      - Vẽ bảng hoặc danh sách mô tả chi tiết khách hàng.
+      - Dùng EL ${customer.xxx} để hiển thị từng trường.
+--%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết khách hàng</title>
+</head>
+<body>
+
+    <%-- TODO: Vẽ giao diện chi tiết khách hàng --%>
+
+</body>
+</html>

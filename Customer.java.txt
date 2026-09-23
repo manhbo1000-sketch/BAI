@@ -1,0 +1,23 @@
+Customer.java
+package com.codegym.model;
+
+/**
+ * Customer — Lớp Model đại diện cho một khách hàng.
+ *
+ * Nhiệm vụ:
+ *  - Lưu trữ thông tin: id, name, email, address.
+ *  - Cung cấp constructor mặc định và constructor đầy đủ.
+ *  - Cung cấp các phương thức getter/setter cho từng thuộc tính.
+ *
+ * TODO: Khai báo 4 thuộc tính và các phương thức getter/setter tương ứng.
+ */
+public class Customer {
+
+    // TODO: Khai báo các trường: id, name, email, address
+
+    // TODO: Constructor mặc định
+
+    // TODO: Constructor đầy đủ tham số
+
+    // TODO: Getter và Setter cho từng trường
+}

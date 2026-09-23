@@ -1,0 +1,24 @@
+CustomerServiceImpl.java
+package com.codegym.service;
+
+import com.codegym.model.Customer;
+import java.util.List;
+
+/**
+ * CustomerServiceImpl — Triển khai CustomerService bằng Map tĩnh.
+ *
+ * Nhiệm vụ:
+ *  - Giả lập database bằng Map<Integer, Customer> tĩnh.
+ *  - Khởi tạo dữ liệu mẫu trong static block.
+ *  - Triển khai đầy đủ 5 phương thức từ interface CustomerService.
+ *
+ * TODO: Khai báo Map tĩnh + triển khai 5 phương thức.
+ */
+public class CustomerServiceImpl implements CustomerService {
+
+    // TODO: Khai báo Map<Integer, Customer> customers (static)
+
+    // TODO: static block khởi tạo 5 khách hàng mẫu
+
+    // TODO: Triển khai @Override các phương thức của interface
+}
