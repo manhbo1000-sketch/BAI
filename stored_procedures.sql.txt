@@ -1,0 +1,50 @@
+stored_procedures.sql
+-- ============================================================
+-- File: stored_procedures.sql
+-- Bài tập: Stored Procedures trong MySQL
+-- Sinh viên: .....................
+-- Lớp: .....................
+-- ============================================================
+
+USE demo;
+
+DROP PROCEDURE IF EXISTS get_user_by_id;
+DROP PROCEDURE IF EXISTS insert_user;
+
+-- ============================================================
+-- 1. STORED PROCEDURE: Lấy User theo ID
+-- ============================================================
+DELIMITER $$
+
+CREATE PROCEDURE get_user_by_id(IN user_id INT)
+BEGIN
+    SELECT users.name, users.email, users.country
+    FROM users
+    WHERE users.id = user_id;
+END$$
+
+DELIMITER ;
+
+-- ============================================================
+-- 2. STORED PROCEDURE: Thêm mới User
+-- ============================================================
+DELIMITER $$
+
+CREATE PROCEDURE insert_user(
+    IN user_name    VARCHAR(50),
+    IN user_email   VARCHAR(50),
+    IN user_country VARCHAR(50)
+)
+BEGIN
+    INSERT INTO users(name, email, country)
+    VALUES(user_name, user_email, user_country);
+END$$
+
+DELIMITER ;
+
+-- ============================================================
+-- 3. KIỂM TRA
+-- ============================================================
+CALL get_user_by_id(1);
+CALL insert_user('Test User', 'test@example.com', 'Vietnam');
+SELECT * FROM users;

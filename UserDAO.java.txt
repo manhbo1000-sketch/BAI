@@ -1,0 +1,144 @@
+UserDAO.java
+package com.codegym.dao;
+
+import com.codegym.model.User;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserDAO implements IUserDAO {
+
+    private static final String URL =
+        "jdbc:mysql://localhost:3306/demo"
+        + "?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "123456";   // ← đổi mật khẩu
+
+    protected Connection getConnection() {
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return conn;
+    }
+
+    // ============================================================
+    // CRUD TRUYỀN THỐNG (PreparedStatement)
+    // ============================================================
+    @Override
+    public void insertUser(User user) throws SQLException {
+        String sql = "INSERT INTO users (name, email, country) VALUES (?, ?, ?)";
+        try (Connection c = getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getCountry());
+            ps.executeUpdate();
+        }
+    }
+
+    @Override
+    public User selectUser(int id) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (Connection c = getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new User(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("country"));
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
+    }
+
+    @Override
+    public List<User> selectAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+        try (Connection c = getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                users.add(new User(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("country")));
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return users;
+    }
+
+    @Override
+    public boolean deleteUser(int id) throws SQLException {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (Connection c = getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    @Override
+    public boolean updateUser(User user) throws SQLException {
+        String sql = "UPDATE users SET name=?, email=?, country=? WHERE id=?";
+        try (Connection c = getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getCountry());
+            ps.setInt(4, user.getId());
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    // ============================================================
+    // ⭐ 2 PHƯƠNG THỨC GỌI STORED PROCEDURE (CallableStatement)
+    // ============================================================
+
+    // Gọi procedure get_user_by_id
+    @Override
+    public User getUserById(int id) {
+        User user = null;
+        String query = "{CALL get_user_by_id(?)}";
+
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query)) {
+
+            callableStatement.setInt(1, id);
+            ResultSet rs = callableStatement.executeQuery();
+
+            while (rs.next()) {
+                String name    = rs.getString("name");
+                String email   = rs.getString("email");
+                String country = rs.getString("country");
+                user = new User(id, name, email, country);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    // Gọi procedure insert_user
+    @Override
+    public void insertUserStore(User user) throws SQLException {
+        String query = "{CALL insert_user(?, ?, ?)}";
+
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query)) {
+
+            callableStatement.setString(1, user.getName());
+            callableStatement.setString(2, user.getEmail());
+            callableStatement.setString(3, user.getCountry());
+            callableStatement.executeUpdate();
+        }
+    }
+}
