@@ -1,23 +1,30 @@
 Customer.java
 package com.codegym.model;
 
-/**
- * Customer — Lớp Model đại diện cho một khách hàng.
- *
- * Nhiệm vụ:
- *  - Lưu trữ thông tin: id, name, email, address.
- *  - Cung cấp constructor mặc định và constructor đầy đủ.
- *  - Cung cấp các phương thức getter/setter cho từng thuộc tính.
- *
- * TODO: Khai báo 4 thuộc tính và các phương thức getter/setter tương ứng.
- */
 public class Customer {
+    private int id;
+    private String name;
+    private String email;
+    private String address;
 
-    // TODO: Khai báo các trường: id, name, email, address
+    public Customer() {}
 
-    // TODO: Constructor mặc định
+    public Customer(int id, String name, String email, String address) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+    }
 
-    // TODO: Constructor đầy đủ tham số
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    // TODO: Getter và Setter cho từng trường
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 }
