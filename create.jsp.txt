@@ -42,7 +42,7 @@ create.jsp
             <label>Country:</label>
             <input type="text" name="country" required>
 
-            <%-- ⭐ CHECKBOX CHỌN PERMISSIONS ⭐ --%>
+            <%-- ⭐ CHECKBOX PERMISSIONS ⭐ --%>
             <label>Quyền hạn (Permissions):</label>
             <div class="perm-group">
                 <label><input type="checkbox" name="permissions" value="1"> Thêm (Add)</label>

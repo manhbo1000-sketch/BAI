@@ -25,9 +25,6 @@ public class UserDAO implements IUserDAO {
         return conn;
     }
 
-    // ============================================================
-    // CRUD CƠ BẢN
-    // ============================================================
     @Override
     public void insertUser(User user) throws SQLException {
         String sql = "INSERT INTO users (name, email, country) VALUES (?, ?, ?)";
@@ -48,11 +45,8 @@ public class UserDAO implements IUserDAO {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new User(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("country"));
+                return new User(rs.getInt("id"), rs.getString("name"),
+                                rs.getString("email"), rs.getString("country"));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return null;
@@ -66,11 +60,8 @@ public class UserDAO implements IUserDAO {
              PreparedStatement ps = c.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                users.add(new User(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("country")));
+                users.add(new User(rs.getInt("id"), rs.getString("name"),
+                                   rs.getString("email"), rs.getString("country")));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return users;
@@ -99,9 +90,6 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-    // ============================================================
-    // STORED PROCEDURES
-    // ============================================================
     @Override
     public User getUserById(int id) {
         User user = null;
@@ -111,10 +99,8 @@ public class UserDAO implements IUserDAO {
             cs.setInt(1, id);
             ResultSet rs = cs.executeQuery();
             while (rs.next()) {
-                user = new User(id,
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("country"));
+                user = new User(id, rs.getString("name"),
+                                rs.getString("email"), rs.getString("country"));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return user;
@@ -145,10 +131,10 @@ public class UserDAO implements IUserDAO {
         try {
             connection = getConnection();
 
-            // 1. Tắt auto-commit để bắt đầu Transaction
+            // 1. Tắt auto-commit → bắt đầu transaction
             connection.setAutoCommit(false);
 
-            // 2. Chèn User + lấy ID vừa sinh tự động
+            // 2. Insert user + lấy ID vừa sinh
             String insertUserSql =
                 "INSERT INTO users (name, email, country) VALUES (?, ?, ?)";
             pstmtUser = connection.prepareStatement(
@@ -158,19 +144,17 @@ public class UserDAO implements IUserDAO {
             pstmtUser.setString(3, user.getCountry());
             pstmtUser.executeUpdate();
 
-            // 3. Lấy ID user vừa chèn
             rs = pstmtUser.getGeneratedKeys();
             int userId = 0;
             if (rs.next()) {
                 userId = rs.getInt(1);
             }
 
-            // 4. Chèn Permissions vào bảng trung gian
+            // 3. Insert permissions
             if (permissionIds != null && permissionIds.length > 0) {
                 String insertPermissionSql =
                     "INSERT INTO user_permission (user_id, permission_id) VALUES (?, ?)";
                 pstmtAssignment = connection.prepareStatement(insertPermissionSql);
-
                 for (int permissionId : permissionIds) {
                     pstmtAssignment.setInt(1, userId);
                     pstmtAssignment.setInt(2, permissionId);
@@ -178,24 +162,21 @@ public class UserDAO implements IUserDAO {
                 }
             }
 
-            // 5. Commit nếu mọi thứ thành công
+            // 4. Commit
             connection.commit();
-            System.out.println("Transaction đã được commit thành công! User ID = " + userId);
+            System.out.println("Transaction đã commit thành công! User ID = " + userId);
 
         } catch (SQLException e) {
-            // 6. Rollback nếu có bất kỳ lỗi nào
+            // 5. Rollback nếu lỗi
             try {
                 if (connection != null) {
                     connection.rollback();
-                    System.out.println("Có lỗi xảy ra! Transaction đã bị rollback.");
+                    System.out.println("Có lỗi! Transaction đã rollback.");
                 }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+            } catch (SQLException ex) { ex.printStackTrace(); }
             e.printStackTrace();
-            throw e;   // Ném lại để Servlet bắt
+            throw e;
         } finally {
-            // 7. Dọn dẹp tài nguyên
             if (rs != null) rs.close();
             if (pstmtUser != null) pstmtUser.close();
             if (pstmtAssignment != null) pstmtAssignment.close();
