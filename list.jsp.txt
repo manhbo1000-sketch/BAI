@@ -31,11 +31,7 @@ list.jsp
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Country</th>
-                    <th>Actions</th>
+                    <th>ID</th><th>Name</th><th>Email</th><th>Country</th><th>Actions</th>
                 </tr>
             </thead>
             <tbody>

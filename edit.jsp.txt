@@ -19,8 +19,7 @@ edit.jsp
 </head>
 <body>
     <div class="box">
-        <h2>✏️ Sửa User (via Stored Procedure)</h2>
-
+        <h2>✏️ Sửa User</h2>
         <form action="users" method="POST">
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="id" value="${user.id}">
@@ -35,7 +34,7 @@ edit.jsp
             <input type="text" name="country" value="<c:out value='${user.country}'/>" required>
 
             <button type="submit" class="btn">💾 Cập nhật</button>
-            <a href="users?action=list" class="btn-back">← Quay lại</a>
+            <a href="users" class="btn-back">← Quay lại</a>
         </form>
     </div>
 </body>

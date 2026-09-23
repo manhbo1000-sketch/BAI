@@ -8,14 +8,18 @@ create.jsp
     <title>Thêm User mới</title>
     <style>
         *{box-sizing:border-box}
-        body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f7fa;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
-        .box{background:#fff;padding:36px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.1);width:440px}
+        body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f7fa;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:20px}
+        .box{background:#fff;padding:36px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.1);width:480px}
         h2{color:#1b2a7a;margin:0 0 20px;text-align:center}
         label{display:block;font-weight:600;color:#333;margin-bottom:6px;font-size:14px}
-        input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:6px;font-size:15px;margin-bottom:16px;outline:none}
+        input[type=text],input[type=email]{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:6px;font-size:15px;margin-bottom:16px;outline:none}
+        .perm-group{display:flex;flex-wrap:wrap;gap:15px;margin:8px 0 20px}
+        .perm-group label{display:flex;align-items:center;gap:6px;font-weight:500;margin:0;cursor:pointer}
+        .perm-group input[type=checkbox]{width:16px;height:16px;accent-color:#1b2a7a;cursor:pointer}
         .btn{width:100%;padding:12px;border:none;border-radius:6px;font-weight:bold;font-size:16px;cursor:pointer;background:#1b2a7a;color:#fff}
+        .btn:hover{background:#f15a24}
         .btn-back{background:#e2e8f0;color:#334155;text-decoration:none;display:block;text-align:center;padding:12px;border-radius:6px;margin-top:10px;font-weight:600}
-        .msg{background:#e8f5e9;color:#16a34a;padding:12px;border-radius:6px;text-align:center;margin-bottom:16px;font-weight:600}
+        .msg{background:#ffebee;color:#c0392b;padding:12px;border-radius:6px;text-align:center;margin-bottom:16px;font-weight:600;font-size:13px}
     </style>
 </head>
 <body>
@@ -38,8 +42,17 @@ create.jsp
             <label>Country:</label>
             <input type="text" name="country" required>
 
-            <button type="submit" class="btn">💾 Lưu (via Stored Procedure)</button>
-            <a href="users?action=list" class="btn-back">← Quay lại</a>
+            <%-- ⭐ CHECKBOX CHỌN PERMISSIONS ⭐ --%>
+            <label>Quyền hạn (Permissions):</label>
+            <div class="perm-group">
+                <label><input type="checkbox" name="permissions" value="1"> Thêm (Add)</label>
+                <label><input type="checkbox" name="permissions" value="2"> Sửa (Edit)</label>
+                <label><input type="checkbox" name="permissions" value="3"> Xoá (Delete)</label>
+                <label><input type="checkbox" name="permissions" value="4"> Xem (View)</label>
+            </div>
+
+            <button type="submit" class="btn">💾 Lưu (Transaction)</button>
+            <a href="users" class="btn-back">← Quay lại danh sách</a>
         </form>
     </div>
 </body>

@@ -5,7 +5,7 @@ web.xml
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
                              https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
-    <display-name>User Management - Stored Procedures</display-name>
+    <display-name>User Management - JDBC Transaction</display-name>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

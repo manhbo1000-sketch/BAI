@@ -12,7 +12,10 @@ public interface IUserDAO {
     boolean deleteUser(int id) throws SQLException;
     boolean updateUser(User user) throws SQLException;
 
-    // ⭐ 2 phương thức sử dụng Stored Procedure
+    // Stored Procedure
     User getUserById(int id);
     void insertUserStore(User user) throws SQLException;
+
+    // ⭐ TRANSACTION: Thêm User + Permissions cùng lúc
+    void addUserTransaction(User user, int[] permissionIds) throws SQLException;
 }

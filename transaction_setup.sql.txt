@@ -1,0 +1,45 @@
+transaction_setup.sql
+-- ============================================================
+-- File: transaction_setup.sql
+-- Bài tập: JDBC Transaction - Thêm User + Permission
+-- Sinh viên: .....................
+-- Lớp: .....................
+-- ============================================================
+
+USE demo;
+
+-- ============================================================
+-- 1. TẠO BẢNG PERMISSION
+-- ============================================================
+DROP TABLE IF EXISTS user_permission;
+DROP TABLE IF EXISTS permission;
+
+CREATE TABLE permission (
+    id   INT(11) PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+-- ============================================================
+-- 2. TẠO BẢNG TRUNG GIAN user_permission
+-- ============================================================
+CREATE TABLE user_permission (
+    user_id       INT(11),
+    permission_id INT(11),
+    PRIMARY KEY (user_id, permission_id),
+    FOREIGN KEY (user_id)       REFERENCES users(id),
+    FOREIGN KEY (permission_id) REFERENCES permission(id)
+);
+
+-- ============================================================
+-- 3. THÊM DỮ LIỆU MẪU CHO BẢNG PERMISSION
+-- ============================================================
+INSERT INTO permission(id, name) VALUES (1, 'add');
+INSERT INTO permission(id, name) VALUES (2, 'edit');
+INSERT INTO permission(id, name) VALUES (3, 'delete');
+INSERT INTO permission(id, name) VALUES (4, 'view');
+
+-- ============================================================
+-- 4. KIỂM TRA
+-- ============================================================
+SELECT * FROM permission;
+SELECT * FROM user_permission;

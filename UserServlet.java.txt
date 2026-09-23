@@ -35,7 +35,9 @@ public class UserServlet extends HttpServlet {
                 case "update": updateUser(request, response); break;
                 default:       listUsers(request, response);  break;
             }
-        } catch (SQLException e) { throw new ServletException(e); }
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
     }
 
     @Override
@@ -54,7 +56,9 @@ public class UserServlet extends HttpServlet {
                 case "delete": deleteUser(request, response);   break;
                 default:       listUsers(request, response);    break;
             }
-        } catch (SQLException e) { throw new ServletException(e); }
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
     }
 
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
@@ -69,29 +73,46 @@ public class UserServlet extends HttpServlet {
         request.getRequestDispatcher("user/create.jsp").forward(request, response);
     }
 
-    // ⭐ SỬ DỤNG get_user_by_id
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         User existingUser = userDAO.getUserById(id);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/edit.jsp");
         request.setAttribute("user", existingUser);
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("user/edit.jsp").forward(request, response);
     }
 
-    // ⭐ SỬ DỤNG insert_user
+    // ⭐ INSERT USER + PERMISSIONS với TRANSACTION
     private void insertUser(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+            throws SQLException, ServletException, IOException {
+
         String name    = request.getParameter("name");
         String email   = request.getParameter("email");
         String country = request.getParameter("country");
+
+        // Nhận mảng permissions từ form (checkbox)
+        String[] permissionsStr = request.getParameterValues("permissions");
+        int[] permissions = null;
+        if (permissionsStr != null) {
+            permissions = new int[permissionsStr.length];
+            for (int i = 0; i < permissionsStr.length; i++) {
+                permissions[i] = Integer.parseInt(permissionsStr[i]);
+            }
+        }
+
         User newUser = new User(name, email, country);
 
-        userDAO.insertUserStore(newUser);
+        try {
+            // Gọi phương thức có Transaction
+            userDAO.addUserTransaction(newUser, permissions);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/create.jsp");
-        request.setAttribute("message", "Đã thêm mới User thành công!");
-        dispatcher.forward(request, response);
+            // Thành công → quay về danh sách
+            response.sendRedirect("users");
+
+        } catch (SQLException e) {
+            // Thất bại → hiển thị thông báo lỗi
+            request.setAttribute("message", "Lỗi! Transaction đã bị rollback: " + e.getMessage());
+            request.getRequestDispatcher("user/create.jsp").forward(request, response);
+        }
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
@@ -100,15 +121,15 @@ public class UserServlet extends HttpServlet {
         String name    = request.getParameter("name");
         String email   = request.getParameter("email");
         String country = request.getParameter("country");
-        User book = new User(id, name, email, country);
-        userDAO.updateUser(book);
-        response.sendRedirect("users?action=list");
+        User user = new User(id, name, email, country);
+        userDAO.updateUser(user);
+        response.sendRedirect("users");
     }
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         userDAO.deleteUser(id);
-        response.sendRedirect("users?action=list");
+        response.sendRedirect("users");
     }
 }
