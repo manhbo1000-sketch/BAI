@@ -16,6 +16,9 @@ public interface IUserDAO {
     void insertUserStore(User user) throws SQLException;
     void addUserTransaction(User user, int[] permissionIds) throws SQLException;
 
-    // ⭐ TEST WITHOUT TRANSACTION: Cố tình tạo lỗi để quan sát rác dữ liệu
+    // ⭐ TEST WITHOUT TRANSACTION (bài trước - gây rác dữ liệu)
     void insertUpdateWithoutTransaction() throws SQLException;
+
+    // ⭐ TEST WITH TRANSACTION (bài này - ngăn rác dữ liệu)
+    void insertUpdateUseTransaction() throws SQLException;
 }

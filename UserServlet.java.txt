@@ -47,10 +47,17 @@ public class UserServlet extends HttpServlet {
                 case "new":    showNewForm(request, response);  break;
                 case "edit":   showEditForm(request, response); break;
                 case "delete": deleteUser(request, response);   break;
-                // ⭐ TEST KHÔNG DÙNG TRANSACTION
+
+                // ⭐ TEST KHÔNG dùng Transaction (bài trước)
                 case "test-without-tran":
                     testWithoutTran(request, response);
                     break;
+
+                // ⭐ TEST CÓ dùng Transaction (bài này)
+                case "test-use-tran":
+                    testUseTran(request, response);
+                    break;
+
                 default:       listUsers(request, response);    break;
             }
         } catch (SQLException e) { throw new ServletException(e); }
@@ -119,17 +126,29 @@ public class UserServlet extends HttpServlet {
     }
 
     // ============================================================
-    // ⭐ TEST WITHOUT TRANSACTION
-    // Gọi phương thức cố tình sinh lỗi để quan sát rác dữ liệu
+    // ⭐ TEST KHÔNG TRANSACTION (bài trước)
     // ============================================================
     private void testWithoutTran(HttpServletRequest request,
                                   HttpServletResponse response) {
         try {
             userDAO.insertUpdateWithoutTransaction();
-            System.out.println("=== Đã chạy xong testWithoutTran ===");
-            System.out.println("=== Hãy mở MySQL chạy: SELECT * FROM Employee; ===");
+            System.out.println("=== [WITHOUT-TRAN] Đã chạy xong ===");
+            System.out.println("=== Kiểm tra MySQL: SELECT * FROM Employee; ===");
         } catch (SQLException e) {
-            System.out.println("Lỗi khi chạy testWithoutTran:");
+            e.printStackTrace();
+        }
+    }
+
+    // ============================================================
+    // ⭐ TEST CÓ TRANSACTION (bài này)
+    // ============================================================
+    private void testUseTran(HttpServletRequest request,
+                              HttpServletResponse response) {
+        try {
+            userDAO.insertUpdateUseTransaction();
+            System.out.println("=== [USE-TRAN] Hoàn tất gọi hàm testUseTran! ===");
+            System.out.println("=== Kiểm tra MySQL: SELECT * FROM Employee; ===");
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

@@ -174,9 +174,8 @@ public class UserDAO implements IUserDAO {
             }
             connection.commit();
         } catch (SQLException e) {
-            try {
-                if (connection != null) connection.rollback();
-            } catch (SQLException ex) { ex.printStackTrace(); }
+            try { if (connection != null) connection.rollback(); }
+            catch (SQLException ex) { ex.printStackTrace(); }
             throw e;
         } finally {
             if (rs != null) rs.close();
@@ -190,11 +189,44 @@ public class UserDAO implements IUserDAO {
     }
 
     // ============================================================
-    // ⭐ TEST WITHOUT TRANSACTION — Cố tình gây lỗi ở bước Update
-    // Kết quả: 2 dòng INSERT vẫn được ghi (auto-commit) → rác dữ liệu
+    // ⭐ BÀI TRƯỚC: KHÔNG Transaction → RÁC DỮ LIỆU
     // ============================================================
     @Override
     public void insertUpdateWithoutTransaction() throws SQLException {
+        try (Connection conn = getConnection();
+             Statement statement = conn.createStatement();
+             PreparedStatement psInsert = conn.prepareStatement(SQL_INSERT);
+             PreparedStatement psUpdate = conn.prepareStatement(SQL_UPDATE)) {
+
+            statement.execute(SQL_TABLE_DROP);
+            statement.execute(SQL_TABLE_CREATE);
+
+            psInsert.setString(1, "Quynh");
+            psInsert.setBigDecimal(2, new BigDecimal(10));
+            psInsert.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            psInsert.execute();
+
+            psInsert.setString(1, "Ngan");
+            psInsert.setBigDecimal(2, new BigDecimal(20));
+            psInsert.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            psInsert.execute();
+
+            // CỐ TÌNH SAI: setBigDecimal(2, ...) thay vì (1, ...)
+            psUpdate.setBigDecimal(2, new BigDecimal(999.99));
+            psUpdate.setString(2, "Quynh");
+            psUpdate.execute();
+
+        } catch (Exception e) {
+            System.out.println("=== [WITHOUT-TRAN] Đã bắt lỗi ===");
+            e.printStackTrace();
+        }
+    }
+
+    // ============================================================
+    // ⭐ BÀI NÀY: CÓ Transaction → KHÔNG RÁC DỮ LIỆU
+    // ============================================================
+    @Override
+    public void insertUpdateUseTransaction() throws SQLException {
         try (Connection conn = getConnection();
              Statement statement = conn.createStatement();
              PreparedStatement psInsert = conn.prepareStatement(SQL_INSERT);
@@ -204,29 +236,44 @@ public class UserDAO implements IUserDAO {
             statement.execute(SQL_TABLE_DROP);
             statement.execute(SQL_TABLE_CREATE);
 
-            // 2. INSERT "Quynh"
+            // ==========================================
+            // 2. BẮT ĐẦU TRANSACTION BLOCK
+            // Tắt auto-commit
+            // ==========================================
+            conn.setAutoCommit(false);
+
+            // 3. INSERT "Quynh"
             psInsert.setString(1, "Quynh");
             psInsert.setBigDecimal(2, new BigDecimal(10));
             psInsert.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             psInsert.execute();
 
-            // 3. INSERT "Ngan"
+            // 4. INSERT "Ngan"
             psInsert.setString(1, "Ngan");
             psInsert.setBigDecimal(2, new BigDecimal(20));
             psInsert.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             psInsert.execute();
 
-            // 4. UPDATE — CỐ TÌNH SAI: setBigDecimal(2, ...) thay vì (1, ...)
-            // → Parameter 1 chưa được gán → lỗi "No value specified for parameter 1"
-            psUpdate.setBigDecimal(2, new BigDecimal(999.99));
-            // Dòng đúng phải là: psUpdate.setBigDecimal(1, new BigDecimal(999.99));
+            // 5. UPDATE — Cố tình SAI để test rollback
+            // Đổi dòng dưới thành setBigDecimal(1, ...) để test commit thành công
+            psUpdate.setBigDecimal(2, new BigDecimal(999.99));   // ⬅️ SAI: param 1 chưa gán
             psUpdate.setString(2, "Quynh");
-
-            // Lệnh này sẽ NÉM EXCEPTION
             psUpdate.execute();
 
+            // ==========================================
+            // 6. KẾT THÚC TRANSACTION — COMMIT
+            // Chỉ chạy được nếu không có exception ở trên
+            // ==========================================
+            conn.commit();
+            System.out.println("=== [USE-TRAN] Commit thành công! ===");
+
+            // Thói quen tốt: bật lại auto-commit
+            conn.setAutoCommit(true);
+
         } catch (Exception e) {
-            System.out.println("=== Đã bắt được lỗi trong quá trình thực thi SQL ===");
+            System.out.println("=== [USE-TRAN] Lỗi xảy ra! ===");
+            System.out.println("=== Khi try-with-resources đóng connection, JDBC sẽ tự ROLLBACK ===");
+            System.out.println("=== Message: " + e.getMessage() + " ===");
             e.printStackTrace();
         }
     }
